@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="bn">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#101018">
+<title>Rafik Studio — AI Video Lab</title>
+<style>
+:root{color-scheme:dark;--bg:#0c0c12;--panel:#171720;--line:#30303e;--text:#f5f4fa;--muted:#aaa9ba;--accent:#c7a5ff;--accent2:#8a5cf6}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at top,#211638 0,#0c0c12 48%);font-family:system-ui,-apple-system,Segoe UI,sans-serif;color:var(--text)}
+.wrap{max-width:980px;margin:auto;padding:22px 16px 60px}.top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:30px}.brand{font-weight:800;font-size:20px;letter-spacing:.2px}.brand span{color:var(--accent)}.pill{border:1px solid #594b70;border-radius:999px;padding:7px 11px;color:#e3d5ff;font-size:12px}
+.hero{text-align:center;padding:20px 0 28px}.eyebrow{color:var(--accent);font-size:12px;letter-spacing:2px;text-transform:uppercase}.hero h1{font-size:clamp(30px,7vw,52px);line-height:1.08;margin:12px auto;max-width:760px}.hero p{color:var(--muted);max-width:620px;margin:0 auto;line-height:1.7}
+.grid{display:grid;grid-template-columns:1fr;gap:16px}@media(min-width:760px){.grid{grid-template-columns:1.1fr .9fr}}
+.card{background:rgba(23,23,32,.94);border:1px solid var(--line);border-radius:20px;padding:18px;box-shadow:0 16px 60px #0002}.card h2{font-size:18px;margin:0 0 14px}.sub{color:var(--muted);font-size:13px;line-height:1.6}
+.upload{border:1px dashed #6c5b83;border-radius:15px;min-height:180px;display:flex;align-items:center;justify-content:center;text-align:center;padding:18px;position:relative;overflow:hidden;background:#111119}.upload input{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:pointer}.upload .inner{pointer-events:none}.upload .symbol{font-size:34px}.upload img{max-width:100%;max-height:230px;border-radius:10px;display:none;margin:0 auto 10px}
+label{display:block;font-size:13px;color:#d7d4e4;margin:16px 0 8px}textarea,select,input[type=text]{width:100%;border:1px solid var(--line);border-radius:12px;background:#101018;color:var(--text);padding:12px;font:inherit}textarea{min-height:94px;resize:vertical}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:10px}.btn{border:0;border-radius:12px;padding:13px 16px;font-weight:750;cursor:pointer;font:inherit}.primary{background:linear-gradient(100deg,#c7a5ff,#8b5cf6);color:#171020;width:100%;margin-top:16px}.secondary{background:#262333;color:#f1eaff;border:1px solid #454052}.notice{border:1px solid #51456a;background:#211a30;color:#d9c9f5;padding:12px;border-radius:12px;font-size:12px;line-height:1.6;margin-top:14px}.preview{min-height:260px;border:1px solid var(--line);border-radius:15px;background:linear-gradient(145deg,#191525,#101018);display:flex;align-items:center;justify-content:center;text-align:center;padding:20px}.preview .orb{font-size:50px;opacity:.7}.status{margin-top:12px;font-size:13px;color:var(--muted);line-height:1.6}.mini{display:flex;justify-content:space-between;border-top:1px solid var(--line);padding:12px 0;font-size:13px}.mini span{color:var(--muted)}footer{color:#858395;text-align:center;font-size:12px;margin-top:24px;line-height:1.8}
+.overlay{position:fixed;inset:0;background:#08070df2;z-index:9;display:flex;align-items:center;justify-content:center;padding:18px}.modal{max-width:440px;width:100%;background:#171720;border:1px solid #3a3447;border-radius:22px;padding:24px;text-align:center}.modal h2{font-size:24px;margin:10px 0}.modal p{color:var(--muted);line-height:1.65;font-size:14px}.modal button{width:100%;margin-top:10px}.danger{color:#ffb7c4;font-size:12px;margin-top:10px}
+</style>
+</head>
+<body>
+<div class="overlay" id="ageGate">
+ <div class="modal">
+  <div class="pill">18+ AGE GATE</div>
+  <h2>আপনার বয়স কি ১৮ বা তার বেশি?</h2>
+  <p>এই ডেমোতে কোনো বাস্তব AI ভিডিও তৈরি হয় না। শুধু ওয়েবসাইটের ইন্টারফেস দেখানো হচ্ছে। চালিয়ে যেতে আপনার বয়স ১৮+ হতে হবে।</p>
+  <button class="btn primary" id="yesAge">হ্যাঁ, আমার বয়স ১৮+</button>
+  <button class="btn secondary" id="noAge">না, ফিরে যাব</button>
+  <div class="danger">অপ্রাপ্তবয়স্ক বা সম্মতিহীন অন্তরঙ্গ ছবি/ভিডিও আপলোড করবেন না।</div>
+ </div>
+</div>
+<div class="wrap">
+ <header class="top"><div class="brand">Rafik <span>Studio</span></div><div class="pill">AI VIDEO LAB · DEMO</div></header>
+ <section class="hero">
+  <div class="eyebrow">CREATE · PREVIEW · CONTROL</div>
+  <h1>আপনার ছবিকে দিন <span style="color:var(--accent)">নতুন গতি</span></h1>
+  <p>মোবাইল-ফ্রেন্ডলি AI ভিডিও জেনারেটর প্রোটোটাইপ। ছবি বাছাই করুন, নির্দেশনা লিখুন, তারপর ডেমো ইন্টারফেস পরীক্ষা করুন।</p>
+ </section>
+ <main class="grid">
+  <section class="card">
+   <h2>✦ ভিডিও তৈরি করুন</h2>
+   <div class="upload" id="uploadBox">
+    <div class="inner"><img id="imgPreview" alt="আপলোড করা ছবির প্রিভিউ"><div class="symbol">＋</div><strong>ছবি বেছে নিন</strong><div class="sub">JPG, PNG বা WEBP · শুধু আপনার অধিকার/সম্মতি থাকা ছবি</div></div>
+    <input id="imageInput" type="file" accept="image/png,image/jpeg,image/webp" aria-label="ছবি বেছে নিন">
+   </div>
+   <label for="prompt">ভিডিওর নির্দেশনা</label>
+   <textarea id="prompt" placeholder="উদাহরণ: ক্যামেরা ধীরে কাছে আসবে, চুলে বাতাস লাগবে, নরম সিনেমাটিক আলো..."></textarea>
+   <div class="row">
+    <div><label for="duration">সময়</label><select id="duration"><option>5 সেকেন্ড</option><option>8 সেকেন্ড</option><option>10 সেকেন্ড</option></select></div>
+    <div><label for="ratio">অনুপাত</label><select id="ratio"><option>9:16 · মোবাইল</option><option>16:9 · ল্যান্ডস্কেপ</option><option>1:1 · স্কয়ার</option></select></div>
+   </div>
+   <button class="btn primary" id="generate">ভিডিও তৈরি করুন (ডেমো)</button>
+   <div class="notice">ডেমো মোড: এই বোতাম কোনো API কল করে না এবং কোনো ভিডিও তৈরি করে না। আসল জেনারেশনের জন্য নীতিমালা-সম্মত API ও নিরাপদ সার্ভার সংযোগ লাগবে।</div>
+  </section>
+  <section class="card">
+   <h2>▣ ফলাফল</h2>
+   <div class="preview" id="result">
+    <div><div class="orb">✧</div><strong>আপনার ভিডিও এখানে দেখা যাবে</strong><div class="sub" style="margin-top:8px">প্রোটোটাইপ প্রিভিউ — এখনো AI-র সঙ্গে সংযুক্ত নয়</div></div>
+   </div>
+   <div class="status" id="status">অবস্থা: অপেক্ষায় আছে</div>
+   <div class="mini"><strong>ভিডিও মডেল</strong><span>সংযুক্ত নয়</span></div>
+   <div class="mini"><strong>API খরচ</strong><span>এখন ০ টাকা · ডেমো</span></div>
+   <div class="mini"><strong>আপলোড গোপনীয়তা</strong><span>এই পৃষ্ঠায় লোকালি প্রিভিউ</span></div>
+   <button class="btn secondary" id="clear" style="width:100%;margin-top:10px">ছবি ও নির্দেশনা মুছুন</button>
+  </section>
+ </main>
+ <footer>Rafik Studio · স্বাধীন প্রোটোটাইপ, Playbox-এর সঙ্গে সম্পর্কিত নয়।<br>গোপনীয়তার জন্য সংবেদনশীল ছবি আপলোড না করাই ভালো। ফাইল এই ডেমো পৃষ্ঠায় শুধু প্রিভিউ হয়; কোনো সার্ভারে পাঠানো হয় না।</footer>
+</div>
+<script>
+const gate=document.getElementById('ageGate');
+document.getElementById('yesAge').onclick=()=>gate.style.display='none';
+document.getElementById('noAge').onclick=()=>{gate.innerHTML='<div class="modal"><h2>আপনি ফিরে যেতে পারেন</h2><p>এই ডেমো চালাতে হলে আপনার বয়স ১৮ বছর বা তার বেশি হতে হবে।</p></div>';};
+const input=document.getElementById('imageInput'), img=document.getElementById('imgPreview'), status=document.getElementById('status');
+input.addEventListener('change',()=>{
+ const file=input.files&&input.files[0]; if(!file)return;
+ if(!['image/png','image/jpeg','image/webp'].includes(file.type)){status.textContent='এই ফাইলের ধরন সমর্থিত নয়।';return;}
+ const reader=new FileReader();reader.onload=e=>{img.src=e.target.result;img.style.display='block';document.querySelector('.upload .symbol').style.display='none';document.querySelector('.upload .inner strong').textContent=file.name;};reader.readAsDataURL(file);
+ status.textContent='ছবি এই ডিভাইসের ব্রাউজারে প্রিভিউ হচ্ছে; সার্ভারে পাঠানো হয়নি।';
+});
+document.getElementById('generate').onclick=()=>{
+ if(gate.style.display!=='none'){status.textContent='আগে বয়স নিশ্চিত করুন।';return;}
+ if(!input.files.length){status.textContent='আগে একটি ছবি বেছে নিন।';return;}
+ if(!document.getElementById('prompt').value.trim()){status.textContent='ভিডিওর নির্দেশনা লিখুন।';return;}
+ status.textContent='ডেমো প্রস্তুত: ছবি ও নির্দেশনা ঠিক আছে। আসল ভিডিও তৈরি করতে এখনো API সংযুক্ত করতে হবে।';
+};
+document.getElementById('clear').onclick=()=>{
+ input.value='';img.removeAttribute('src');img.style.display='none';document.querySelector('.upload .symbol').style.display='block';document.querySelector('.upload .inner strong').textContent='ছবি বেছে নিন';document.getElementById('prompt').value='';status.textContent='অবস্থা: ছবি ও নির্দেশনা মুছে ফেলা হয়েছে।';
+ document.getElementById('result').innerHTML='<div><div class="orb">✧</div><strong>আপনার ভিডিও এখানে দেখা যাবে</strong><div class="sub" style="margin-top:8px">প্রোটোটাইপ প্রিভিউ — এখনো AI-র সঙ্গে সংযুক্ত নয়</div></div>';
+};
+</script>
+</body>
+</html>
